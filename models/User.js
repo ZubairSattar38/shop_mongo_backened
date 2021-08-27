@@ -7,70 +7,35 @@ const saltRounds = 10;
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-    userName: {
+    name: {
         type: String,
         required: true,
-        trim: true,
-        unique: true
-    },cnic: {
-        type: String,
-        trim: true,
-        unique: true
-    }, qualification: {
-        type: String,
-        trim: true,
-    }, gender: {
-        type: String,
-        trim: true,
-    },
-    firstName: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    lastName: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    email: {
-        type: String,
-        required: true,
-        trim: true,
-        unique: true
     },
     password: {
         type: String,
+        allowNull: false,
         required: true,
-        trim: true,
     },
-    roll: {
+    email: {
         type: String,
+        unique: true,
         required: true,
-        trim: true,
+        isEmail: true,
     },
-    phoneNumber: {
-        type: String,
-        trim: true,
-    },classes:[
-        {
-          type: Schema.Types.ObjectId,
-          ref: "Class"
+    desId: {
+        type: Schema.Types.ObjectId,
+        references: {
+            model: 'designation', // 'fathers' refers to table name
+            key: 'id', // 'id' refers to column name in fathers table
         }
-      ],
-    //   teacherId: [
-    //     {
-    //       type: mongoose.Schema.Types.ObjectId,
-    //       ref: "User"
-    //     }
-    //   ],
-      studentId: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User"  
-        }
-      ],
-
+    },
+    contactNo: {
+        type: Schema.Types.ObjectId
+    },
+    salary: {
+        type: Schema.Types.ObjectId,
+        required: true,
+    },
 });
 
 userSchema.pre('save', function (next) {

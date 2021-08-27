@@ -5,29 +5,30 @@ const bcrypt = require('bcrypt');
 
 module.exports = {
     register: (req, res) => {
-        try{
-        let result = {};
-        let status = 200;
-        const { firstName, lastName, userName, roll, email, password } = req.body;
-        const user = new User({ firstName, lastName, userName, roll, email, password }); // document = instance of a model
-        console.log("req ",user)
-        user.save((err, user) => {
-            if (!err) {
-                const token = tokenCheckAndGen.generateAccessToken(user)
-                result.status = status;
-                result.result = user;
-                result.token = token;
-            } else {
-                status = 500;
-                result.status = status;
-                result.error = err;
-            }
-            res.status(status).send(result);
-        });
-    }
-    catch(err){
-        console.log(err)
-    }
+        try {
+            let result = {};
+            let status = 200;
+            console.log("req.body ", req.body);
+            const { name, contactNo, salary, desId, email, password } = req.body;
+            const user = new User({ name, contactNo, salary, desId, email, password }); // document = instance of a model
+            console.log("req ", user)
+            user.save((err, user) => {
+                if (!err) {
+                    const token = tokenCheckAndGen.generateAccessToken(user)
+                    result.status = status;
+                    result.result = user;
+                    result.token = token;
+                } else {
+                    status = 500;
+                    result.status = status;
+                    result.error = err;
+                }
+                res.status(status).send(result);
+            });
+        }
+        catch (err) {
+            console.log(err)
+        }
     },
     login: async (req, res) => {
         try {

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-const uri = "mongodb+srv://zubair:Islamabadcity@cluster0.cgek5.mongodb.net/<dbname>?retryWrites=true&w=majority";
-
+const uri = "mongodb+srv://zubair:Islamabadcity123@cluster0.ht1qm.mongodb.net/ShopProject?retryWrites=true&w=majority";
 const connectDB = () =>{
      mongoose.connect(uri,{useUnifiedTopology:true,useNewUrlParser:true})
     console.log("connected ... ");
