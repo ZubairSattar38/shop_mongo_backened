@@ -1,29 +1,31 @@
-const User = require('../models/User');
+const Authorization = require('../models/Authorization');
 const jwt = require("jsonwebtoken");
 const tokenCheckAndGen = require('./generateToken')
 const bcrypt = require('bcrypt');
 
 module.exports = {
+
     register: (req, res) => {
         try {
             let result = {};
-            let status = 200;
-            console.log("req.body ", req.body);
-            const { name, contactNo, salary, desId, email, password } = req.body;
-            const user = new User({ name, contactNo, salary, desId, email, password }); // document = instance of a model
-            console.log("req ", user)
-            user.save((err, user) => {
-                if (!err) {
-                    const token = tokenCheckAndGen.generateAccessToken(user)
-                    result.status = status;
-                    result.result = user;
+            const { username, password, email, shops, status } = req.body;
+
+            const authorization = new Authorization({ username, password, email, shops, status }); // document = instance of a model
+            authorization.save((err, authorization) => {
+                if (authorization) {
+                    console.log("Data ", req.body);
+                    const token = tokenCheckAndGen.generateAccessToken(authorization)
+                    console.log("token :- ", token)
+                    result.status = 200;
+                    result.result = authorization;
                     result.token = token;
+                    return res.status(200).send(result);
                 } else {
                     status = 500;
-                    result.status = status;
+                    result.status = 500;
                     result.error = err;
+                    return res.status(500).send(result);
                 }
-                res.status(status).send(result);
             });
         }
         catch (err) {
@@ -33,29 +35,36 @@ module.exports = {
     login: async (req, res) => {
         try {
             let result = {};
-            let status = 200;
             const { email, password } = req.body;
-            await User.findOne({ email: email }, function (err, user) {
-                if (user) {
-                    const passwordMatch = bcrypt.compare(password, user.password);
+            await Authorization.findOne({ email: email }, function (err, authorization) {
+                if (authorization) {
+                    const passwordMatch = bcrypt.compare(password, authorization.password);
                     if (passwordMatch) {
-                        //login
-                        const token = tokenCheckAndGen.generateAccessToken(user)
-                        result.status = status;
-                        result.user = user;
+                        const token = tokenCheckAndGen.generateAccessToken(authorization)
+                        result.status = 200;
+                        result.authorization = authorization;
                         result.token = token;
-                        res.status(status).send(result);
+                        res.status(200).send(result);
                     } else {
                         result.status = 500;
                         result.err = err
-                        res.status(status).send(result);
+                        res.status(500).send(result);
                     }
                 } else {
                     result.status = 500;
                     result.err = err
-                    res.status(status).send(result);
+                    res.status(500).send(result);
                 }
             })
+        } catch (error) { console.log(error) }
+    },
+    fetchAllAuth: async (req, res) => {
+        try {
+            let result = {};
+            Authorization.find({username:"hasd"}).populate('shop').then( (authUser)=>{
+                res.json(authUser)
+            })
+
         } catch (error) { console.log(error) }
     }
 }

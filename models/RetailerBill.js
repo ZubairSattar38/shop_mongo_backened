@@ -7,24 +7,28 @@ var retailerBillSchema = new Schema({
         required: true,
     },
     billNo: {
-        type: Schema.Types.ObjectId,
+        type: String,
+        required: true,
+        unique:true
+    },
+    retailer_id:{ type: Schema.Types.ObjectId,ref: 'Retailer' },
+    issue_date:{
+        type:Date,
         required: true,
     },
-    rid: {
-        type: Schema.Types.ObjectId,
-        references: {
-            model: 'retailer', // 'fathers' refers to table name
-            key: 'id', // 'id' refers to column name in fathers table
-        }
+    expire_date:{
+        type:Date,
+        required: true,
     },
-    totalAmount: {
-        type: Schema.Types.ObjectId,
+    total_quantity:{
+        type:Number,
     },
-    productCount: {
-        type: Schema.Types.ObjectId,
+    total_amount:{
+        type:Float64Array,
     },
-    date: {
-        type: Sequelize.DATE,
+    status:{
+        type:Boolean
     }
+    
 });
 module.exports = mongoose.model('RetailerBill', retailerBillSchema);

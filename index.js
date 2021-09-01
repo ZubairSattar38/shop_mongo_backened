@@ -20,8 +20,9 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
 app.use('/api/v1',authRouter);
+app.use('/api',tokenRouter);
 
-app.use('/api/v1/admin',tokenCheckAndGen.authenticateJWT,tokenRouter);
+// app.use('/api/v1/admin',tokenCheckAndGen.authenticateJWT,tokenRouter);
 if (environment !== 'production') {
   app.use(logger('dev'));
 }

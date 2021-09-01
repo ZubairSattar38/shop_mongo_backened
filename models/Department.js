@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var departmentSchema = new Schema({
-    title: {
+    name: {
         type: String,
         required: true,
     },

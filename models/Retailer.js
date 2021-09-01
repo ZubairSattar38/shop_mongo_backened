@@ -7,17 +7,12 @@ var retailerSchema = new Schema({
         required: true,
     },
     contact: {
-        type: Schema.Types.ObjectId,
+        type: String,
+        required: true,
     },
     address: {
         type: String,
         required: true,
-        unique: true
-    },
-    location: {
-        type: String,
-        required: true,
-        unique: true
     },
 });
 module.exports = mongoose.model('Retailer', retailerSchema);

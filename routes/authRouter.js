@@ -7,5 +7,8 @@ const authController = require('../controllers/auth');
 
 authRouter.route('/register').post(authController.register)
 authRouter.route('/login').post(authController.login)
+authRouter.route('/fetchAllAuth').get(authController.fetchAllAuth)
+
+
 
 module.exports = authRouter;

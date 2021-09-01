@@ -3,12 +3,13 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 
 module.exports = {
-    addUser: async (req, res) => {
+    addUser: (req, res) => {
         try {
-            let result = {}
+            let result = {};
             let status = 200;
-            const user = new User(req.body); // document = instance of a model
-
+            const { username,name, designation, image_url, nic, contact } = req.body;
+            const user = new User({ username,name, designation, image_url, nic, contact }); // document = instance of a model
+            console.log("req ", user)
             user.save((err, user) => {
                 if (!err) {
                     result.status = status;
@@ -20,102 +21,38 @@ module.exports = {
                 }
                 res.status(status).send(result);
             });
-        } catch (error) { console.log(error) }
-    },
-    checkUserName: async (req, res) => {
-        try {
-            let result = {}
-            let status = 200;
-            const { userName } = req.body;
-            await User.findOne({ userName: userName }, function (err, user) {
-                if (user) {
-                    result.status = status;
-                    result.userNameExist = true;
-                } else {
-                    status = status;
-                    result.userNameExist = false;
-                }
-                res.status(status).send(result);
-            })
-        } catch (error) { console.log(error) }
-    },
-    getAllTeacher: async (req, res) => {
-        try {
-            let result = {}
-            let status = 200;
-            await User.find({ roll: 'teacher' }, function (err, users) {
-                if (users) {
-                    console.log("users ", users)
-                    result.status = status;
-                    result.users = users;
-                } else {
-                    status = status;
-                    result.users = users;
-                }
-                res.status(status).send(result);
-            })
-        } catch (error) {
-            console.log(error)
+        }
+        catch (err) {
+            console.log(err)
         }
     },
-
-    getSearchTeacher: async (req, res) => {
-        try {
-            let result = {}
-            let status = 200;
-            const {firstName} = req.body
-            console.log("First Name ",firstName);
-            await User.find({$and:[ {firstName:new RegExp(firstName,"i")},{ roll:'teacher'}]}, function (err, users) {
-                if (users) {
-                    // console.log("Teacher Data ", users)
-                    result.status = status;
-                    result.users = users;
-                } else {
-                    status = status;
-                    result.users = users;
-                }
-                res.status(status).send(result);
+    getAllUsers : async (req, res)=>{
+        let result ={};
+        try{
+            console.log("Checking")
+            User.find({}).then(users =>{
+                result.status=200;
+                result.msg="Successfully Fetched"
+                result.users = users;
+                console.log("User Data ",users);   
+                return res.status(200).json(result); 
+            }).catch(error=>{
+                console.log(error);
             })
-        } catch (error) {
-            console.log(error)
+        }catch(error){
+            console.log(error);
         }
     },
-    getSearchStudent: async (req, res) => {
-        try {
-            let result = {}
-            let status = 200;
-            const {firstName} = req.body
-            await User.find({$and:[ {firstName:new RegExp(firstName,"i")},{ roll:'student'}]}, function (err, users) {
-                if (users) {
-                    result.status = status;
-                    result.users = users;
-                } else {
-                    status = status;
-                    result.users = users;
-                }
-                res.status(status).send(result);
+    getDesUser: async (req,res)=>{
+        try{
+            console.log("Check :- ",req.params.id);
+            User.find({desId : req.params.id}).populate(Designation,{des_id}).then(users =>{
+                console.log("users :- ",users);
+                res.json(users);
             })
-        } catch (error) {
-            console.log(error)
-        }
-    },
-    getAllStudent: async (req, res) => {
-        try {
-            let result = {}
-            let status = 200;
-            await User.find({ roll: 'student' }, function (err, users) {
-                if (users) {
-                    console.log("users ", users)
-                    result.status = status;
-                    result.users = users;
-                } else {
-                    status = status;
-                    result.users = users;
-                }
-                res.status(status).send(result);
-            })
-        } catch (error) {
-            console.log(error)
+        }catch(error){
+            console.log(error);
         }
     }
+
 }
