@@ -22,7 +22,7 @@ var authorizationSchema = new Schema({
         required: true,
         isEmail: true,
     },
-    shop: {
+    shop:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Shop"
       },

@@ -6,7 +6,7 @@ var retailerBillSchema = new Schema({
         type: String,
         required: true,
     },
-    billNo: {
+    bill_no: {
         type: String,
         required: true,
         unique:true

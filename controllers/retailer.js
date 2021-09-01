@@ -1,18 +1,19 @@
-const Payment = require('../models/Payment');
+const Retailer = require('../models/Retailer');
 module.exports = {
-    addPayment: (req, res) => {
+
+    addRetailer: (req, res) => {
         try {
             let result = {};
             console.log("req.body ", req.body);
-            const { bill_month_name, arrears, fine, issue_date, last_date, payment_date, amount_pay, remainings,image_url,status } = req.body;
-            const payment = new Payment({bill_month_name, arrears, fine, issue_date, last_date, payment_date, amount_pay, remainings,image_url,status}); // document = instance of a model
-            payment.save((err, pay) => {
-                console.log(pay);
+            const {name,contact,address} = req.body;
+            const retailer = new Retailer({name,contact,address}); // document = instance of a model
+            retailer.save((err, retail) => {
+                console.log(retail);
                 result.status = 200;
-                result.result = pay;
-                if (pay) {
+                result.result = retail;
+                if (retail) {
                     result.status = 200;
-                    result.result = pay;
+                    result.result = retail;
                 } else {
                     result.status = 500;
                     result.error = err;
@@ -24,14 +25,14 @@ module.exports = {
             console.log(err)
         }
     },
-    getAllPayment : async (req, res)=>{
+    getAllRetailer : async (req, res)=>{
         let result ={};
         try{
-            Payment.find({}).then(Payment =>{
+            Retailer.find({}).then(Retailer =>{
                 result.status=200;
                 result.msg="Successfully Fetched"
-                result.Payment = Payment;
-                console.log("Payment Data ",Payment);   
+                result.Retailer = Retailer;
+                console.log("Retailer Data ",Retailer);   
                 return res.status(200).json(result); 
             }).catch(error=>{
                 console.log(error);
@@ -40,15 +41,15 @@ module.exports = {
             console.log(error);
         }
     },
-    getMonthPayments : async (req, res)=>{
+    getNameRetailer : async (req, res)=>{
         let result ={};
-        console.log("Param name ", req.params.month)
+        console.log("Param name ", req.params.name)
         try{
-            Payment.find({bill_month_name:req.params.month}).then(Payment =>{
+            Retailer.find({name:req.params.name}).then(Retailer =>{
                 result.status=200;
                 result.msg="Successfully Fetched"
-                result.Payment = Payment;
-                console.log("Payment Data ",Payment);   
+                result.Retailer = Retailer;
+                console.log("Retailer Data ",Retailer);   
                 return res.status(200).json(result); 
             }).catch(error=>{
                 console.log(error);
@@ -57,5 +58,4 @@ module.exports = {
             console.log(error);
         }
     },
-
 }

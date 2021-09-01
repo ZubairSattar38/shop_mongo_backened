@@ -8,9 +8,9 @@ module.exports = {
     register: (req, res) => {
         try {
             let result = {};
-            const { username, password, email, shops, status } = req.body;
-
-            const authorization = new Authorization({ username, password, email, shops, status }); // document = instance of a model
+            const { username, password, email, shop, status } = req.body;
+            console.log("Body Data :- ", req.body)
+            const authorization = new Authorization({ username, password, email, shop, status }); // document = instance of a model
             authorization.save((err, authorization) => {
                 if (authorization) {
                     console.log("Data ", req.body);
@@ -60,11 +60,12 @@ module.exports = {
     },
     fetchAllAuth: async (req, res) => {
         try {
-            let result = {};
-            Authorization.find({username:"hasd"}).populate('shop').then( (authUser)=>{
-                res.json(authUser)
+            Authorization.find({}).populate('shop').then((authUser) => {
+                console.log("Auth User :- ", authUser)
+                if (authUser) {
+                    res.json(authUser)
+                }
             })
-
         } catch (error) { console.log(error) }
     }
 }
