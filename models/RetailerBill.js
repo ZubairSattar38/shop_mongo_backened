@@ -9,26 +9,25 @@ var retailerBillSchema = new Schema({
     bill_no: {
         type: String,
         required: true,
-        unique:true
+        unique: true
     },
-    retailer_id:{ type: Schema.Types.ObjectId,ref: 'Retailer' },
-    issue_date:{
-        type:Date,
+    retailer: { type: Schema.Types.ObjectId, ref: 'Retailer' },
+    issue_date: {
+        type: Date,
         required: true,
     },
-    expire_date:{
-        type:Date,
+    expire_date: {
+        type: Date,
         required: true,
     },
-    total_quantity:{
-        type:Number,
+    total_quantity: {
+        type: Number,
     },
-    total_amount:{
-        type:Float64Array,
+    total_amount: {
+        type: Number,
     },
-    status:{
-        type:Boolean
+    status: {
+        type: Boolean
     }
-    
 });
 module.exports = mongoose.model('RetailerBill', retailerBillSchema);

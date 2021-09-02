@@ -5,14 +5,8 @@ var categorySchema = new Schema({
     name: {
         type: String,
         required: true,
+        unique: true
     },
-    dep_id: {
-        type: Schema.Types.ObjectId,
-        references: {
-            model: 'Department', // 'fathers' refers to table name
-            key: '_id', // 'id' refers to column name in fathers table
-        }
-    },
-
+    department: { type: Schema.Types.ObjectId, ref: 'Department' },
 });
 module.exports = mongoose.model('Category', categorySchema);
